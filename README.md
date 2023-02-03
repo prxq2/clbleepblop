@@ -1,4 +1,4 @@
-# CLBEEPBLOP
+# CLBLEEPBLOP
 
 This is CLBEEPBLOP, a (probably) complete, idiomatic telegram bot API
 for Common Lisp. It uses DEXADOR for the http requests, and jonathan
