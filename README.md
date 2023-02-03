@@ -1,17 +1,21 @@
 # CLBLEEPBLOP
 
 This is CLBLEEPBLOP, a (probably) complete, idiomatic telegram bot API
-for Common Lisp. It uses DEXADOR for the http requests, and jonathan
+for Common Lisp. It uses [Dexador](https://github.com/fukamachi/dexador) for the http requests, and [jonathan](https://github.com/Rudolph-Miller/jonathan)
 for the JSON machinery.
 
 Up to small cosmetic edits, the API has been machine generated from
 [the online documentation for the Telegram Bot
 Api](https://core.telegram.org/bots/api), so this package really has
-*everything*. Passports, payments, etc.
+*everything*. Passports, payments, etc. At least in principle.
 
 However, since it has been machine generated, and machines aren't so
 smart, there may be serious bugs. These are *totaly* the machines'
 fault.
+
+:warning: This software is a very early alpha stage. Seems to be usable but be aware that bugs are expected.
+
+At the moment, it will only run on SBCL.
 
 ## Usage
 
