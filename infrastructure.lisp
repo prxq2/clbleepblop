@@ -71,9 +71,10 @@
 
     (mapcar #'make-update-from-json stuff)))
 
-(defun run-telegram-bot (bot &key (timeout *default-timeout*))
+(defmethod run-telegram-bot ((bot bot) &key (timeout *default-timeout*) (skip-backlog t))
   (let ((operative-timeout nil)
-	(offset nil))
+	(offset nil)
+	(skip skip-backlog))
     (loop do
       (format t "Polling for updates. Timeout = ~A.~%" operative-timeout)
       (let ((latest-updates (tg-get-updates bot :offset offset
@@ -82,8 +83,13 @@
 	(setf operative-timeout timeout)
 
 	(loop for update in latest-updates do
-	  (format t "Handling update with ID ~A~%" (update-id update))
 	  (setf offset (+ 1 (max (update-id update)
 				 (or offset 0))))
 
-	  (handle-update bot (update-item update) update))))))
+	  (if skip
+	      (format t "Skipping update with ID ~A~%" (update-id update))
+	      (progn
+		(format t "Handling update with ID ~A~%" (update-id update))
+		(handle-update bot (update-item update) update))))
+
+	(setf skip nil)))))
