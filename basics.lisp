@@ -3,9 +3,9 @@
 
 (in-package clbleepblop)
 
-(defvar *default-timeout* 60)
-(defvar *debug* nil)
-(defvar *api-verbose* nil)
+(defvar *default-tg-timeout* 60)
+(defvar *tg-debug* nil)
+(defvar *tg-api-verbose* nil)
 
 (defclass bot ()
   ((token :initarg :token :reader token)

@@ -146,7 +146,7 @@
 	 (result (jonathan:parse
 		  (dex:post uri
 			    :content content
-			    :verbose *api-verbose*))))
+			    :verbose *tg-api-verbose*))))
     (setf *last-answer* result)
     (if (getf result :|ok|)
 	(getf result :|result|)

@@ -71,7 +71,7 @@
 
     (mapcar #'make-update-from-json stuff)))
 
-(defmethod run-telegram-bot ((bot bot) &key (timeout *default-timeout*) (skip-backlog t))
+(defmethod run-telegram-bot ((bot bot) &key (timeout *default-tg-timeout*) (skip-backlog t))
   (let ((operative-timeout nil)
 	(offset nil)
 	(skip skip-backlog))
