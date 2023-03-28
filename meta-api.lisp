@@ -93,8 +93,14 @@
 (defun %def-api-class-and-deserializer (arg)
   (destructuring-bind (name (&rest slotspecs)) arg
     (let* ((real-name (make-translated-symbol name))
+	   (safe-accessors (loop for form in slotspecs
+				 collecting
+				 (destructuring-bind (slot-name &rest stuff) form
+				     (declare (ignore stuff))
+				   (safe-accessor real-name slot-name))))
+
 	   (class-slots
-	     (loop for form in slotspecs
+	     (loop for form in slotspecs and safe-accessor in safe-accessors
 		   collecting
 		   (destructuring-bind (slot-name &key slot-type slot-dimensions default) form
 		     (declare (ignore slot-dimensions slot-type)) ;; exactly, who cares?
@@ -104,7 +110,7 @@
 			   (initform (if default
 					 `(:initform ,default))))
 
-		       `(,slot-symbol :initarg ,initarg :initform nil :accessor ,(safe-accessor real-name slot-name) ,@initform)))))
+		       `(,slot-symbol :initarg ,initarg :initform nil :accessor ,safe-accessor ,@initform)))))
 	   (class-form `(defclass ,real-name (tg-object)
 			  ((%tg-deserialize-slotspec :initform ',(make-deserialization-slotspec slotspecs)
 						     :allocation :class)
@@ -130,6 +136,7 @@
 
       `(progn
 	 ,class-form
+	 (export ',(cons real-name safe-accessors) 'clbleepblop)
 	 ,deserializer))))
 
 (defmacro def-api-class-and-deserializer (name (&rest slotspecs))
@@ -170,11 +177,14 @@
 	 (maker-name (maker-name return-type))
 
 	 (wrapped (if return-type (maker-form maker-name api-call return-dimensions)
-		      api-call)))
+		      api-call))
+	 (method-name (safe-api-name name)))
 
-    `(defmethod ,(safe-api-name name) ((bot bot) &key ,@args)
+    `(progn
+       (export ',method-name :clbleepblop)
+       (defmethod ,method-name ((bot bot) &key ,@args)
        (let* ((,argl-symbol nil) ,@adders)
-	 ,wrapped))))
+	 ,wrapped)))))
 
 (defmacro def-api-method (name slots &key return-type return-dimensions)
   (%def-api-method name slots :return-type return-type :return-dimensions return-dimensions))

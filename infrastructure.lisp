@@ -34,7 +34,9 @@
 			       (error ,(format nil "No handler for updates from type ~A found." x))
 			       (warn ,(format nil "No handler for updates from type ~A found." x)))))))
 
-    `(progn ,@methods)))
+    (format t "~S~%" `(export ',update-types :clbleepblop))
+    `(progn (export ',update-types :clbleepblop)
+	    ,@methods)))
 
 (define-bot-handler-methods)
 
