@@ -8,7 +8,8 @@
 (defmethod handle-update ((bot echo-bot) (message message) update)
   (declare (ignore update))
   (tg-send-message bot
-		   :text (format nil "got '~A'" (text message))
+		   :text (format nil "got '~A' <span class=\"tg-spoiler\">spoiler</span> " (text message))
+		   :parse-mode "html"
 		   :chat-id (id (chat message))))
 
 (defclass button-bot (bot) ())

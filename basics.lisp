@@ -1,6 +1,7 @@
 (defpackage clbleepblop
   (:use cl)
-  (:export :bot :*default-tg-timeout* :*tg-debug* :*tg-api-verbose* :handle-update))
+  (:export :bot :*default-tg-timeout* :*tg-debug* :*tg-api-verbose* :handle-update
+	   :run-telegram-bot))
 
 (in-package clbleepblop)
 

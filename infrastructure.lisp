@@ -92,6 +92,14 @@
 	      (format t "Skipping update with ID ~A~%" (update-id update))
 	      (progn
 		(format t "Handling update with ID ~A~%" (update-id update))
-		(handle-update bot (update-item update) update))))
+		(loop while (not
+		      (restart-case
+			  (handle-update bot (update-item update) update)
+			(retry ()
+			  :report "Retry telegram update"
+			  nil)
+			(skip ()
+			  :report "Skip telegram update"
+			  t)))))))
 
 	(setf skip nil)))))
